@@ -27,14 +27,18 @@ const OpenStreetMap = () => {
 
   const locationIcon = new Icon({
     iconUrl: "/location-2955.svg",
-    iconSize: [32, 32],
+    iconSize: [42, 42],
     iconAnchor: [16, 32],
   });
 
-  const [zoom, setZoom] = useState<number>(16);
+  const [zoom, setZoom] = useState<number>(17);
   //   console.log(center);
 
   const handleGetCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition((el) => {
+      console.log(el.coords.latitude);
+    });
+
     if (navigator.geolocation) {
       setLoading(true);
       navigator.geolocation.getCurrentPosition(
@@ -59,6 +63,7 @@ const OpenStreetMap = () => {
   return (
     <div className="container relative">
       <MapContainer
+        zoomControl={false}
         center={center}
         zoom={zoom}
         // bounds={bounds}
@@ -76,22 +81,19 @@ const OpenStreetMap = () => {
         ) : (
           <div></div>
         )}
-        {/* <Marker position={center} /> */}
+
         <SetMapCenter center={center} />
       </MapContainer>
-
-      {loading ? (
-        <button className="absolute right-3 top-[70%] z-10 bg-white w-10 h-10 rounded-full flex justify-center items-center shadow-lg ">
+      <button
+        className="absolute right-3 top-[60%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
+        onClick={handleGetCurrentLocation}
+      >
+        {loading ? (
           <IonSpinner className="text-black" name="circles"></IonSpinner>
-        </button>
-      ) : (
-        <button
-          className="absolute right-3 top-[70%] z-10 bg-white w-10 h-10 rounded-full flex justify-center items-center shadow-lg"
-          onClick={handleGetCurrentLocation}
-        >
+        ) : (
           <TbCurrentLocation color="black" size={20} fontWeight={100} />
-        </button>
-      )}
+        )}
+      </button>
     </div>
   );
 };

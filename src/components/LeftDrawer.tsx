@@ -24,7 +24,7 @@ const LeftDrawer = () => {
       onClick={toggleDrawer(false)}
     >
       <Button
-        className="absolute top-[75px] left-[5%]"
+        className="absolute top-[5%] left-[5%]"
         onClick={toggleDrawer(false)}
       >
         x

@@ -9,8 +9,63 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { title } from "process";
+import SwiperDetail from "./SwiperDetail";
+import Image from "next/image";
 
-const drawerBleeding = 56;
+type Cabs = {
+  image: string;
+  title: string;
+  price: number;
+  description: string;
+};
+
+const cabs = [
+  {
+    image: "/List-Car.png",
+    title: "LetsCab",
+    price: 1500,
+    description: "Илүү хүртээмжтэй",
+  },
+  {
+    image: "/List-Car-2.png",
+    title: "Стандарт",
+    price: 1500,
+    description: "1-р эгнээгээр зорчдог",
+  },
+  {
+    image: "/List-Car-3.png",
+    title: "Вип",
+    price: 3500,
+    description: "Ая тухтай",
+  },
+  {
+    image: "/List-Car.png",
+    title: "Minivan",
+    price: 3500,
+    description: "Олуулаа, 4-с дээш хүний суудалтай",
+  },
+];
+
+const Delivery = [
+  {
+    image: "/List-Car.png",
+    title: "Гараас гарт",
+    price: 5000,
+    desc: "Найдвартай баталгаатай, хурдтай",
+  },
+];
+
+const Driver = [
+  {
+    image: "/List-Car-2.png",
+    title: "Дуудлагын жолооч",
+    price: 25000,
+    desc: "Дуудлагын жолооч",
+  },
+];
+
+const drawerBleeding = 286;
 
 interface Props {
   window?: () => Window;
@@ -26,16 +81,17 @@ const Root = styled("div")(({ theme }) => ({
 
 const StyledBox = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
+  //   height: "full",
 }));
 
 const Puller = styled("div")(({ theme }) => ({
-  width: 30,
+  width: 80,
   height: 6,
   backgroundColor: theme.palette.mode === "light" ? grey[300] : grey[900],
   borderRadius: 3,
   position: "absolute",
   top: 8,
-  left: "calc(50% - 15px)",
+  left: "calc(44% - 15px)",
 }));
 
 export default function SwipeableEdgeDrawer(props: Props) {
@@ -55,16 +111,17 @@ export default function SwipeableEdgeDrawer(props: Props) {
       <Global
         styles={{
           ".MuiDrawer-root > .MuiPaper-root": {
-            height: `calc(50% - ${drawerBleeding}px)`,
+            height: `calc(85% - ${drawerBleeding}px)`,
             overflow: "visible",
           },
         }}
       />
-      <Box sx={{ textAlign: "center", pt: 1 }}>
+      {/* <Box sx={{ textAlign: "center", pt: 1 }}>
         <Button onClick={toggleDrawer(true)}>Open</Button>
-      </Box>
+      </Box> */}
       <SwipeableDrawer
-        container={container}
+        onClick={toggleDrawer(true)}
+        // container={container}
         anchor="bottom"
         open={open}
         onClose={toggleDrawer(false)}
@@ -79,28 +136,43 @@ export default function SwipeableEdgeDrawer(props: Props) {
           sx={{
             position: "absolute",
             top: -drawerBleeding,
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
             visibility: "visible",
             right: 0,
             left: 0,
+            paddingX: "20px",
+            paddingY: "25px",
+            // height: "500px",
+            // marginTop: "50px",
+            // backgroundColor: "white",
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: "text.secondary" }}>
-            51 results
-          </Typography>
+          {cabs.map(({ image, title, description, price }, index) => (
+            <div
+              key={index}
+              className="mb-[30px] rounded-[10px] overflow-hidden "
+            >
+              {" "}
+              <SwiperDetail
+                image={image}
+                title={title}
+                description={description}
+                price={price}
+              />
+            </div>
+          ))}
         </StyledBox>
         <StyledBox
           sx={{
+            backgroundColor: "white",
             px: 2,
             pb: 2,
             height: "100%",
-            overflow: "auto",
+            // overflow: "auto",
           }}
-        >
-          <Skeleton variant="rectangular" height="100%" />
-        </StyledBox>
+        ></StyledBox>
       </SwipeableDrawer>
     </Root>
   );

@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { TbCurrentLocation } from "react-icons/tb";
 import { Icon } from "leaflet";
 import { IonSpinner } from "@ionic/react";
+import { useAddressData } from "./Context/Address";
 
 interface Center {
   lat: number;
@@ -23,6 +24,7 @@ const OpenStreetMap = () => {
     lat: 47.918873,
     lng: 106.917595,
   });
+  const { address, setAddress } = useAddressData();
   const [loading, setLoading] = useState<boolean>(false);
 
   const locationIcon = new Icon({
@@ -32,13 +34,8 @@ const OpenStreetMap = () => {
   });
 
   const [zoom, setZoom] = useState<number>(17);
-  //   console.log(center);
 
   const handleGetCurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition((el) => {
-      console.log(el.coords.latitude);
-    });
-
     if (navigator.geolocation) {
       setLoading(true);
       navigator.geolocation.getCurrentPosition(
@@ -47,6 +44,7 @@ const OpenStreetMap = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
+          getAddress(position.coords.latitude, position.coords.longitude);
           setLoading(false);
         },
         () => {
@@ -59,6 +57,16 @@ const OpenStreetMap = () => {
       alert("Geolocation ajilkueno");
     }
   };
+
+  const getAddress = (lat: number, lng: number) => {
+    const url = `https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}&api_key=664413790747f007359223ewsbc990e`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setAddress(data);
+      });
+  };
+  console.log(address, "1234");
 
   return (
     <div className="container relative">
@@ -85,7 +93,7 @@ const OpenStreetMap = () => {
         <SetMapCenter center={center} />
       </MapContainer>
       <button
-        className="absolute right-3 top-[60%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
+        className="absolute right-3 top-[55%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
         onClick={handleGetCurrentLocation}
       >
         {loading ? (

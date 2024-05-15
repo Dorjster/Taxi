@@ -12,7 +12,7 @@ const page = () => {
     <div className="w-full relative ">
       <Map />
       <div className="flex flex-col items-center px-[20px]">
-        <div className="absolute top-0 z-10 pt-[50px] flex gap-[8px] justify-center w-full">
+        <div className="absolute top-0 z-10 pt-[50px] flex gap-[8px] justify-center w-full px-[2%]">
           {" "}
           <TemporaryDrawer />
           <SearchBar />

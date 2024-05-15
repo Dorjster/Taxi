@@ -16,7 +16,7 @@ const SearchBar = () => {
         sx={{
           backgroundColor: "#F7F7F7",
           borderRadius: "20px",
-          width: "100%",
+          width: "90%",
           display: "flex",
           alignItems: "center",
           padding: "5px 10px",

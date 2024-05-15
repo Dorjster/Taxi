@@ -43,7 +43,7 @@ const cabs = [
     image: "/List-Car.png",
     title: "Minivan",
     price: 3500,
-    description: "Олуулаа, 4-с дээш хүний суудалтай",
+    description: `Олуулаа,4-с дээш хүний суудалтай`,
   },
 ];
 
@@ -65,7 +65,7 @@ const Driver = [
   },
 ];
 
-const drawerBleeding = 286;
+const drawerBleeding = 236;
 
 interface Props {
   window?: () => Window;
@@ -81,7 +81,6 @@ const Root = styled("div")(({ theme }) => ({
 
 const StyledBox = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
-  //   height: "full",
 }));
 
 const Puller = styled("div")(({ theme }) => ({
@@ -136,8 +135,8 @@ export default function SwipeableEdgeDrawer(props: Props) {
           sx={{
             position: "absolute",
             top: -drawerBleeding,
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
+            borderTopLeftRadius: 24,
+            borderTopRightRadius: 24,
             visibility: "visible",
             right: 0,
             left: 0,

@@ -93,7 +93,7 @@ const OpenStreetMap = () => {
         <SetMapCenter center={center} />
       </MapContainer>
       <button
-        className="absolute right-3 top-[55%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
+        className="absolute right-3 top-[50%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
         onClick={handleGetCurrentLocation}
       >
         {loading ? (

@@ -4,71 +4,23 @@ import { Global } from "@emotion/react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { grey } from "@mui/material/colors";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { title } from "process";
 import SwiperDetail from "./SwiperDetail";
-import Image from "next/image";
-
-type Cabs = {
-  image: string;
-  title: string;
-  price: number;
-  description: string;
-};
-
-const cabs = [
-  {
-    image: "/List-Car.png",
-    title: "LetsCab",
-    price: 1500,
-    description: "Илүү хүртээмжтэй",
-  },
-  {
-    image: "/List-Car-2.png",
-    title: "Стандарт",
-    price: 1500,
-    description: "1-р эгнээгээр зорчдог",
-  },
-  {
-    image: "/List-Car-3.png",
-    title: "Вип",
-    price: 3500,
-    description: "Ая тухтай",
-  },
-  {
-    image: "/List-Car.png",
-    title: "Minivan",
-    price: 3500,
-    description: `Олуулаа,4-с дээш хүний суудалтай`,
-  },
-];
-
-const Delivery = [
-  {
-    image: "/List-Car.png",
-    title: "Гараас гарт",
-    price: 5000,
-    description: "Найдвартай баталгаатай, хурдтай",
-  },
-];
-
-const Driver = [
-  {
-    image: "/List-Car-2.png",
-    title: "Дуудлагын жолооч",
-    price: 25000,
-    description: "Дуудлагын жолооч",
-  },
-];
+import { cabs, Delivery, Driver } from "./_db";
+import SwipeableTemporaryDrawer from "./Swiper";
 
 const drawerBleeding = 236;
 
 interface Props {
   window?: () => Window;
+}
+
+export interface ItemData {
+  image: string;
+  title: string;
+  description: string;
+  price: number;
 }
 
 const Root = styled("div")(({ theme }) => ({
@@ -88,7 +40,7 @@ const StyledBox = styled("div")(({ theme }) => ({
 const Puller = styled("div")(({ theme }) => ({
   width: 80,
   height: 6,
-  backgroundColor: theme.palette.mode === "light" ? grey[300] : grey[900],
+  backgroundColor: theme.palette.mode === "light" ? grey[100] : grey[900],
   borderRadius: 3,
   position: "absolute",
   top: 8,
@@ -96,15 +48,23 @@ const Puller = styled("div")(({ theme }) => ({
 }));
 
 export default function SwipeableEdgeDrawer(props: Props) {
-  const { window } = props;
   const [open, setOpen] = React.useState(false);
+  const [openSecondDrawer, setOpenSecondDrawer] = React.useState(false);
+  const [selectedData, setSelectedData] = React.useState<ItemData | null>(null);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const toggleSecondDrawer = (newOpen: boolean) => () => {
+    setOpenSecondDrawer(newOpen);
+  };
+
+  const handleCall = (data: ItemData) => {
+    setSelectedData(data);
+    toggleSecondDrawer(true)();
+    console.log(data);
+  };
 
   return (
     <Root>
@@ -117,12 +77,9 @@ export default function SwipeableEdgeDrawer(props: Props) {
           },
         }}
       />
-      {/* <Box sx={{ textAlign: "center", pt: 1 }}>
-        <Button onClick={toggleDrawer(true)}>Open</Button>
-      </Box> */}
+
       <SwipeableDrawer
-        onClick={toggleDrawer(true)}
-        // container={container}
+        className="h-[100vh]"
         anchor="bottom"
         open={open}
         onClose={toggleDrawer(false)}
@@ -134,86 +91,89 @@ export default function SwipeableEdgeDrawer(props: Props) {
         }}
       >
         <StyledBox
-          className=" h-[160%]  "
+          className=" h-[160%]"
           sx={{
             position: "absolute",
-
             top: -drawerBleeding,
             borderTopLeftRadius: 24,
             borderTopRightRadius: 24,
             visibility: "visible",
-
-            // paddingX: "20px",
           }}
         >
           <Puller />
 
           <StyledBox
             sx={{
-              // position: "absolute",
               px: 2,
-
               height: "100%",
               overflow: "auto",
-              // overflowY: "scroll",
               paddingY: "5%",
             }}
           >
-            {" "}
             <Typography sx={{ paddingY: "8px", fontWeight: "550" }}>
               Такси үйлчилгээ
             </Typography>
-            {cabs.map(({ image, title, description, price }, index) => (
+            {cabs.map((cab, index) => (
               <div
+                onClick={() => {
+                  handleCall(cab);
+                }}
                 key={index}
                 className="mb-[10px] rounded-[10px] overflow-hidden "
               >
-                {" "}
                 <SwiperDetail
-                  image={image}
-                  title={title}
-                  description={description}
-                  price={price}
+                  image={cab.image}
+                  title={cab.title}
+                  description={cab.description}
+                  price={cab.price}
                 />
               </div>
             ))}
             <Typography sx={{ paddingY: "8px", fontWeight: "550" }}>
               Хүргэлт
             </Typography>
-            {Delivery.map(({ image, title, description, price }, index) => (
+            {Delivery.map((delivery, index) => (
               <div
+                onClick={() => {
+                  handleCall(delivery);
+                }}
                 key={index}
                 className="mb-[10px] rounded-[10px] overflow-hidden "
               >
-                {" "}
                 <SwiperDetail
-                  image={image}
-                  title={title}
-                  description={description}
-                  price={price}
+                  image={delivery.image}
+                  title={delivery.title}
+                  description={delivery.description}
+                  price={delivery.price}
                 />
               </div>
             ))}
             <Typography sx={{ paddingY: "8px", fontWeight: "550" }}>
               Дуудлагын жолооч
             </Typography>
-            {Driver.map(({ image, title, description, price }, index) => (
+            {Driver.map((driver, index) => (
               <div
+                onClick={() => {
+                  handleCall(driver);
+                }}
                 key={index}
                 className="mb-[10px] rounded-[10px] overflow-hidden "
               >
-                {" "}
                 <SwiperDetail
-                  image={image}
-                  title={title}
-                  description={description}
-                  price={price}
+                  image={driver.image}
+                  title={driver.title}
+                  description={driver.description}
+                  price={driver.price}
                 />
               </div>
             ))}
           </StyledBox>
         </StyledBox>
-        {/*  */}
+        <SwipeableTemporaryDrawer
+          open={openSecondDrawer}
+          onClose={() => toggleSecondDrawer(false)()}
+          data={selectedData as ItemData}
+        />
       </SwipeableDrawer>
     </Root>
   );

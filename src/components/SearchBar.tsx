@@ -7,7 +7,6 @@ import { useAddressData } from "./Context/Address";
 
 const SearchBar = () => {
   const { address } = useAddressData();
-  const addre = address?.address;
 
   return (
     <div className="bg-white px-[8px] py-[3px] rounded-[20px] flex gap-[8px] justify-between items-center shadow-lg">
@@ -22,7 +21,7 @@ const SearchBar = () => {
           padding: "5px 10px",
           height: "80%",
         }}
-        defaultValue={addre?.building}
+        defaultValue={address?.display_name}
         id="input-with-icon-textfield"
         InputProps={{
           endAdornment: (

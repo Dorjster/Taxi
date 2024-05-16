@@ -10,7 +10,7 @@ const SearchBar = () => {
   const addre = address?.address;
 
   return (
-    <div className="bg-white px-[10px] py-[3px] rounded-[20px] flex gap-[8px] justify-between items-center shadow-lg">
+    <div className="bg-white px-[8px] py-[3px] rounded-[20px] flex gap-[8px] justify-between items-center shadow-lg">
       <Image src="/Icon.svg" width={25} height={20} alt="Search Icon" />
       <TextField
         sx={{

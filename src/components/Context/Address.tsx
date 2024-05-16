@@ -58,7 +58,7 @@ export const AddressProvider: React.FC<AddressProviderProps> = ({
 export const useAddressData = () => {
   const context = useContext(AddressContext);
   if (!context) {
-    throw new Error("useAddressData must be used within an AddressProvider");
+    throw new Error("error bn");
   }
   return context;
 };

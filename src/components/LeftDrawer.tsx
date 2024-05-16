@@ -23,12 +23,12 @@ const LeftDrawer = () => {
       role="presentation"
       onClick={toggleDrawer(false)}
     >
-      <Button
-        className="absolute top-[5%] left-[5%]"
+      <button
+        className="absolute top-[8%] left-[13%] hover:bg-gray-200  rounded-full"
         onClick={toggleDrawer(false)}
       >
         x
-      </Button>
+      </button>
     </Box>
   );
 

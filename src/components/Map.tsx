@@ -14,6 +14,7 @@ interface Center {
 
 const SetMapCenter = ({ center }: { center: Center }) => {
   const map = useMap();
+
   map.flyTo([center.lat, center.lng]);
 
   return null;
@@ -66,7 +67,6 @@ const OpenStreetMap = () => {
         setAddress(data);
       });
   };
-  console.log(address, "1234");
 
   return (
     <div className="container relative">
@@ -93,7 +93,7 @@ const OpenStreetMap = () => {
         <SetMapCenter center={center} />
       </MapContainer>
       <button
-        className="absolute right-3 top-[50%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
+        className="absolute right-3 top-[45%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
         onClick={handleGetCurrentLocation}
       >
         {loading ? (

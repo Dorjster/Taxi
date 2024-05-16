@@ -11,7 +11,7 @@ type Props = {
 const SwiperDetail = (props: Props) => {
   const { image, title, price, description } = props;
   return (
-    <div className="bg-[#F7F7F7] px-3 py-3 rounded-lg flex justify-between ">
+    <div className="bg-[#F7F7F7] px-3 py-1 rounded-[12px] flex justify-between ">
       <div className="flex gap-[12px]">
         {" "}
         <div>
@@ -19,7 +19,6 @@ const SwiperDetail = (props: Props) => {
         </div>
         <div className="mt-[10px]">
           <p className="font-bold text-[14px]">{title}</p>
-
           <p className="text-[12px] text-[#5C5C5C] absolute">{description}</p>
         </div>
       </div>

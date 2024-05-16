@@ -81,8 +81,8 @@ const Root = styled("div")(({ theme }) => ({
 
 const StyledBox = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
-  height: "calc(180% - 56px)",
-  overflow: "auto",
+  height: "calc(100% - 100px)",
+  overflow: "hidden",
 }));
 
 const Puller = styled("div")(({ theme }) => ({
@@ -92,7 +92,7 @@ const Puller = styled("div")(({ theme }) => ({
   borderRadius: 3,
   position: "absolute",
   top: 8,
-  left: "calc(44% - 15px)",
+  left: "calc(43% - 15px)",
 }));
 
 export default function SwipeableEdgeDrawer(props: Props) {
@@ -112,7 +112,7 @@ export default function SwipeableEdgeDrawer(props: Props) {
       <Global
         styles={{
           ".MuiDrawer-root > .MuiPaper-root": {
-            height: `calc(70% - ${drawerBleeding}px)`,
+            height: `calc(75% - ${drawerBleeding}px)`,
             overflow: "visible",
           },
         }}
@@ -134,74 +134,86 @@ export default function SwipeableEdgeDrawer(props: Props) {
         }}
       >
         <StyledBox
+          className=" h-[160%]  "
           sx={{
             position: "absolute",
+
             top: -drawerBleeding,
             borderTopLeftRadius: 24,
             borderTopRightRadius: 24,
             visibility: "visible",
-            overflowY: "scroll",
-            right: 0,
-            left: 0,
-            paddingX: "20px",
-            paddingY: "25px",
+
+            // paddingX: "20px",
           }}
         >
           <Puller />
-          {cabs.map(({ image, title, description, price }, index) => (
-            <div
-              key={index}
-              className="mb-[10px] rounded-[10px] overflow-hidden "
-            >
-              {" "}
-              <SwiperDetail
-                image={image}
-                title={title}
-                description={description}
-                price={price}
-              />
-            </div>
-          ))}
-          <Typography sx={{ paddingY: "8px" }}>Хүргэлт</Typography>
-          {Delivery.map(({ image, title, description, price }, index) => (
-            <div
-              key={index}
-              className="mb-[10px] rounded-[10px] overflow-hidden "
-            >
-              {" "}
-              <SwiperDetail
-                image={image}
-                title={title}
-                description={description}
-                price={price}
-              />
-            </div>
-          ))}
-          <Typography sx={{ paddingY: "8px" }}>Дуудлагын жолооч</Typography>
-          {Driver.map(({ image, title, description, price }, index) => (
-            <div
-              key={index}
-              className="mb-[10px] rounded-[10px] overflow-hidden "
-            >
-              {" "}
-              <SwiperDetail
-                image={image}
-                title={title}
-                description={description}
-                price={price}
-              />
-            </div>
-          ))}
+
+          <StyledBox
+            sx={{
+              // position: "absolute",
+              px: 2,
+
+              height: "100%",
+              overflow: "auto",
+              // overflowY: "scroll",
+              paddingY: "5%",
+            }}
+          >
+            {" "}
+            <Typography sx={{ paddingY: "8px", fontWeight: "550" }}>
+              Такси үйлчилгээ
+            </Typography>
+            {cabs.map(({ image, title, description, price }, index) => (
+              <div
+                key={index}
+                className="mb-[10px] rounded-[10px] overflow-hidden "
+              >
+                {" "}
+                <SwiperDetail
+                  image={image}
+                  title={title}
+                  description={description}
+                  price={price}
+                />
+              </div>
+            ))}
+            <Typography sx={{ paddingY: "8px", fontWeight: "550" }}>
+              Хүргэлт
+            </Typography>
+            {Delivery.map(({ image, title, description, price }, index) => (
+              <div
+                key={index}
+                className="mb-[10px] rounded-[10px] overflow-hidden "
+              >
+                {" "}
+                <SwiperDetail
+                  image={image}
+                  title={title}
+                  description={description}
+                  price={price}
+                />
+              </div>
+            ))}
+            <Typography sx={{ paddingY: "8px", fontWeight: "550" }}>
+              Дуудлагын жолооч
+            </Typography>
+            {Driver.map(({ image, title, description, price }, index) => (
+              <div
+                key={index}
+                className="mb-[10px] rounded-[10px] overflow-hidden "
+              >
+                {" "}
+                <SwiperDetail
+                  image={image}
+                  title={title}
+                  description={description}
+                  price={price}
+                />
+              </div>
+            ))}
+          </StyledBox>
         </StyledBox>
-        <StyledBox
-          sx={{
-            backgroundColor: "white",
-            px: 2,
-            pb: 2,
-            height: "100%",
-            // overflow: "auto",
-          }}
-        ></StyledBox>
+        {/*  */}
       </SwipeableDrawer>
     </Root>
   );

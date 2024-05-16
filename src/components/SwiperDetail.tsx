@@ -19,7 +19,7 @@ const SwiperDetail = (props: Props) => {
         </div>
         <div className="mt-[10px]">
           <p className="font-bold text-[14px]">{title}</p>
-          <p className="text-[12px] text-[#5C5C5C] absolute">{description}</p>
+          <p className="text-[12px] text-[#5C5C5C] ">{description}</p>
         </div>
       </div>
 

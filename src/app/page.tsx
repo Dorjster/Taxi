@@ -17,7 +17,7 @@ const page = () => {
           <TemporaryDrawer />
           <SearchBar />
         </div>
-        <div className="w-[100vw]">
+        <div className="">
           {" "}
           <SwipeableEdgeDrawer />
         </div>

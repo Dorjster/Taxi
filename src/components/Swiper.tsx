@@ -93,7 +93,7 @@ export default function SwipeableTemporaryDrawer({
       onOpen={() => {}}
       PaperProps={{
         sx: {
-          height: "100vh",
+          height: "80vh",
           minHeight: "85vh",
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,

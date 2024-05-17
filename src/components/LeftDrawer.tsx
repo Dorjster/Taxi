@@ -35,7 +35,7 @@ const LeftDrawer = () => {
   return (
     <div>
       <button
-        className="  bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg "
+        className="  bg-white w-12 h-12 rounded-full flex justify-center items-center shadow-lg "
         onClick={toggleDrawer(true)}
       >
         <MdSort size={20} color="black" />

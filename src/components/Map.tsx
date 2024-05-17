@@ -1,18 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  useMap,
-  useMapEvent,
-} from "react-leaflet";
+import { MapContainer, TileLayer, useMap, useMapEvent } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { TbCurrentLocation } from "react-icons/tb";
 import { Icon } from "leaflet";
 import { IonSpinner } from "@ionic/react";
 import { useAddressData } from "./Context/Address";
-import axios from "axios";
+
 import Image from "next/image";
 
 interface Center {
@@ -123,8 +117,8 @@ const OpenStreetMap = () => {
         zoom={zoom}
         style={{
           height: "100vh",
-          width: "100%",
-          position: "relative",
+          width: "100vw",
+          // position: "relative",
           zIndex: "1",
         }}
       >
@@ -135,12 +129,13 @@ const OpenStreetMap = () => {
         {/* <Marker position={[center.lat, center.lng]} icon={locationIcon} /> */}
       </MapContainer>
       <Image
-        src="/Очих-газар.svg"
+        src="/Mappin.svg"
         alt="Location"
-        width={92}
-        height={106}
-        className="absolute left-[39.5%] top-[43%] z-10 "
+        width={106}
+        height={100}
+        className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
       />
+
       <button
         className="absolute right-3 top-[45%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
         onClick={handleGetCurrentLocation}

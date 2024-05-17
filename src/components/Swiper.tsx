@@ -55,7 +55,6 @@ export default function SwipeableTemporaryDrawer({
             borderRadius: "16px",
             width: "100%",
             display: "flex",
-
             padding: "5px 15px",
           }}
           defaultValue={address?.display_name}

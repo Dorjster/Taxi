@@ -1,10 +1,10 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { FullAddress } from "../../types";
+import { Address } from "../../types";
 
 type AddressDataContextType = {
-  address: FullAddress;
-  setAddress: React.Dispatch<React.SetStateAction<FullAddress>>;
+  address: Address;
+  setAddress: React.Dispatch<React.SetStateAction<Address>>;
 };
 
 const AddressContext = createContext<AddressDataContextType | undefined>(
@@ -18,34 +18,36 @@ type AddressProviderProps = {
 export const AddressProvider: React.FC<AddressProviderProps> = ({
   children,
 }) => {
-  const [address, setAddress] = useState<FullAddress>({
-    address: {
-      ISO3166_2_lvl4: "",
-      building: "",
-      city: "",
-      city_district: "",
-      country: "",
-      country_code: "",
-      house_number: "",
-      postcode: "",
-      road: "",
-      suburb: "",
-    },
+  const [address, setAddress] = useState<Address>({
+    // address: {
+    //   ISO3166_2_lvl4: "",
+    //   building: "",
+    //   city: "",
+    //   city_district: "",
+    //   country: "",
+    //   country_code: "",
+    //   house_number: "",
+    //   postcode: "",
+    //   road: "",
+    //   suburb: "",
+    // },
 
-    boundingbox: {
-      north: "",
-      south: "",
-      east: "",
-      west: "",
-    },
+    // boundingbox: {
+    //   north: "",
+    //   south: "",
+    //   east: "",
+    //   west: "",
+    // },
 
     display_name: "",
-    lat: "",
-    licence: "",
-    lon: "",
-    osm_id: 0,
-    osm_type: "",
-    place_id: 0,
+    go_name: "",
+    status: "Come",
+    // lat: "",
+    // licence: "",
+    // lon: "",
+    // osm_id: 0,
+    // osm_type: "",
+    // place_id: 0,
   });
 
   return (

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="97" height="68" viewBox="0.012 -1.508 97 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="97" height="32" rx="12" fill="black"/>
+  <rect x="47.5" y="32" width="2" height="24" fill="black"/>
+  <g filter="url(#filter0_d_1_4968)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M48.5 62C51.2614 62 53.5 61.1046 53.5 60C53.5 58.8954 51.2614 58 48.5 58C45.7386 58 43.5 58.8954 43.5 60C43.5 61.1046 45.7386 62 48.5 62Z" fill="black"/>
+  </g>
+  <defs>
+    <filter id="filter0_d_1_4968" x="39" y="55" width="19" height="13" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="1.5"/>
+      <feGaussianBlur stdDeviation="2.25"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1402 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_4968"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_4968" result="shape"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, -0.000143, -0.000021)" style="">
+    <text style="fill: rgb(229, 229, 229); font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2.1px; text-anchor: middle; word-spacing: 0.9px; white-space: pre;" x="48.5" y="10.856" dx="-0.345 -0.507" dy="8.476 -0.0299999">Очих хаяг</text>
+  </g>
+</svg>

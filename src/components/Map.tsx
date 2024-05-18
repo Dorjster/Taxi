@@ -8,6 +8,7 @@ import { IonSpinner } from "@ionic/react";
 import { useAddressData } from "./Context/Address";
 
 import Image from "next/image";
+import { useRoadData } from "./Context/Road";
 
 interface Center {
   lat: number;
@@ -24,6 +25,7 @@ const SetMapCenter = ({ center }: { center: Center }) => {
 };
 
 const OpenStreetMap = () => {
+  const { road, setRoad } = useRoadData();
   const { address, setAddress } = useAddressData();
   const [center, setCenter] = useState<Center>({
     lat: 47.918873,
@@ -31,12 +33,7 @@ const OpenStreetMap = () => {
   });
 
   const [loading, setLoading] = useState<boolean>(false);
-
-  const locationIcon = new Icon({
-    iconUrl: "/Mappin.svg",
-    iconSize: [92, 106],
-    iconAnchor: [46, 80],
-  });
+  const [showChooseButton, setShowChooseButton] = useState<boolean>(false);
 
   const [zoom, setZoom] = useState<number>(17);
 
@@ -73,19 +70,56 @@ const OpenStreetMap = () => {
 
     return null;
   };
+
   useEffect(() => {
     const getAddress = async () => {
       const url = `https://geocode.maps.co/reverse?lat=${center.lat}&lon=${center.lng}&api_key=664413790747f007359223ewsbc990e`;
       try {
         const response = await fetch(url);
         const data = await response.json();
-        setAddress(data);
+
+        if (address.status === "Come") {
+          setAddress((prev) => ({
+            ...prev,
+            display_name: data.display_name,
+          }));
+        } else {
+          setAddress((prev) => ({
+            ...prev,
+            go_name: data.display_name,
+          }));
+        }
+        if (road.status === "Come") {
+          setRoad((prev) => ({
+            ...prev,
+            start: {
+              lat: center.lat,
+              lon: center.lng,
+            },
+          }));
+        } else {
+          setRoad((prev) => ({
+            ...prev,
+            end: {
+              lat: center.lat,
+              lon: center.lng,
+            },
+          }));
+        }
       } catch (error: any) {
         console.log(error.message);
       }
     };
     getAddress();
-  }, [center, setAddress]);
+  }, [center, setAddress, setRoad, address.status, road.status]);
+
+  useEffect(() => {
+    if (road.end.lat !== 0 && road.end.lon !== 0 && address.go_name !== "") {
+      setShowChooseButton(true);
+    } else {
+      setShowChooseButton(false);
+    }
+  }, [road.end, address.go_name]);
 
   const handleGetCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -109,6 +143,14 @@ const OpenStreetMap = () => {
     }
   };
 
+  const handleChooseButtonClick = () => {
+    setRoad((prev) => ({
+      ...prev,
+      status: "Done",
+    }));
+    setShowChooseButton(false);
+  };
+
   return (
     <div className="container relative">
       <MapContainer
@@ -128,13 +170,23 @@ const OpenStreetMap = () => {
         <SetMapCenter center={center} />
         {/* <Marker position={[center.lat, center.lng]} icon={locationIcon} /> */}
       </MapContainer>
-      <Image
-        src="/Mappin.svg"
-        alt="Location"
-        width={106}
-        height={100}
-        className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
-      />
+      {road.status === "Come" ? (
+        <Image
+          src="/Mappin.svg"
+          alt="Location"
+          width={106}
+          height={100}
+          className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
+        />
+      ) : (
+        <Image
+          src="/goto.svg"
+          alt="Location"
+          width={106}
+          height={100}
+          className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
+        />
+      )}
 
       <button
         className="absolute right-3 top-[45%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
@@ -146,6 +198,15 @@ const OpenStreetMap = () => {
           <TbCurrentLocation color="black" size={20} fontWeight={100} />
         )}
       </button>
+
+      {showChooseButton && (
+        <button
+          className="absolute right-10 z-10 bottom-[26%] hover:scale-105 duration-200 bg-[black] text-white px-3 py-1 rounded-xl"
+          onClick={handleChooseButtonClick}
+        >
+          Сонгох
+        </button>
+      )}
     </div>
   );
 };

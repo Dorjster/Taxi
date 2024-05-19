@@ -114,12 +114,18 @@ const OpenStreetMap = () => {
   }, [center, setAddress, setRoad, address.status, road.status]);
 
   useEffect(() => {
-    if (road.end.lat !== 0 && road.end.lon !== 0 && address.go_name !== "") {
+    if (
+      road.end.lat !== 0 &&
+      road.end.lon !== 0 &&
+      address.go_name !== address.display_name &&
+      address.go_name !== "" &&
+      road.status !== "Done"
+    ) {
       setShowChooseButton(true);
     } else {
       setShowChooseButton(false);
     }
-  }, [road.end, address.go_name]);
+  }, [road.end, address.go_name, address.display_name, road.status]);
 
   const handleGetCurrentLocation = () => {
     if (navigator.geolocation) {

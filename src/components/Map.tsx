@@ -1,22 +1,58 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, useMap, useMapEvent } from "react-leaflet";
+import {
+  MapContainer,
+  Polyline,
+  TileLayer,
+  useMap,
+  useMapEvent,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { TbCurrentLocation } from "react-icons/tb";
-import { Icon } from "leaflet";
+
 import { IonSpinner } from "@ionic/react";
 import { useAddressData } from "./Context/Address";
+import "leaflet-routing-machine";
+import L from "leaflet";
 
 import Image from "next/image";
 import { useRoadData } from "./Context/Road";
+
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "/Mappin.svg",
+  iconUrl: "/goto.svg",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
 
 interface Center {
   lat: number;
   lng: number;
 }
 
-const SetMapCenter = ({ center }: { center: Center }) => {
+type LineStyle = {
+  color: string;
+  opacity: number;
+  weight: number;
+};
+
+type LineOptions = {
+  styles: LineStyle[];
+  extendToWaypoints?: boolean;
+  missingRouteTolerance?: number;
+};
+
+const SetMapCenter = ({
+  center,
+  handleMapInstance,
+}: {
+  center: Center;
+  handleMapInstance: (map: any) => void;
+}) => {
   const map = useMap();
+  handleMapInstance(map);
   useEffect(() => {
     map.flyTo([center.lat, center.lng]);
   }, [center, map]);
@@ -31,11 +67,15 @@ const OpenStreetMap = () => {
     lat: 47.918873,
     lng: 106.917595,
   });
-
+  const [mapInstance, setMapInstance] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showChooseButton, setShowChooseButton] = useState<boolean>(false);
-
+  const [polylineVisible, setPolylineVisible] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(17);
+
+  const handleMapInstance = (map: any) => {
+    setMapInstance(map);
+  };
 
   const CenterListener = ({
     setCenter,
@@ -70,6 +110,11 @@ const OpenStreetMap = () => {
 
     return null;
   };
+  const lineOptions: LineOptions = {
+    styles: [{ color: "blue", opacity: 1, weight: 5 }],
+    extendToWaypoints: true, // or false, depending on your requirement
+    missingRouteTolerance: 10, // or any other value, depending on your requirement
+  };
 
   useEffect(() => {
     const getAddress = async () => {
@@ -83,36 +128,43 @@ const OpenStreetMap = () => {
             ...prev,
             display_name: data.display_name,
           }));
-        } else {
+        } else if (road.status !== "Done") {
           setAddress((prev) => ({
             ...prev,
             go_name: data.display_name,
           }));
         }
-        if (road.status === "Come") {
-          setRoad((prev) => ({
-            ...prev,
-            start: {
-              lat: center.lat,
-              lon: center.lng,
-            },
-          }));
-        } else {
-          setRoad((prev) => ({
-            ...prev,
-            end: {
-              lat: center.lat,
-              lon: center.lng,
-            },
-          }));
+
+        if (road.status !== "Done") {
+          if (road.status === "Come") {
+            setRoad((prev) => ({
+              ...prev,
+              start: {
+                lat: center.lat,
+                lon: center.lng,
+              },
+            }));
+          } else if (road.status === "go to") {
+            setRoad((prev) => ({
+              ...prev,
+              end: {
+                lat: center.lat,
+                lon: center.lng,
+              },
+            }));
+          }
         }
       } catch (error: any) {
         console.log(error.message);
       }
     };
-    getAddress();
+    if (
+      (address.status === "Come" || road.status !== "Done") &&
+      road.status !== "Done"
+    ) {
+      getAddress();
+    }
   }, [center, setAddress, setRoad, address.status, road.status]);
-
   useEffect(() => {
     if (
       road.end.lat !== 0 &&
@@ -154,6 +206,21 @@ const OpenStreetMap = () => {
       ...prev,
       status: "Done",
     }));
+    if (mapInstance && road.start && road.end) {
+      const control = L.Routing.control({
+        waypoints: [
+          L.latLng(road.start.lat, road.start.lon),
+          L.latLng(road.end.lat, road.end.lon),
+        ],
+        routeWhileDragging: false,
+        show: false,
+        // lineOptions: lineOptions,
+      });
+
+      console.log(control);
+
+      control.addTo(mapInstance);
+    }
     setShowChooseButton(false);
   };
 
@@ -169,29 +236,46 @@ const OpenStreetMap = () => {
           // position: "relative",
           zIndex: "1",
         }}
+        whenReady={() => handleMapInstance(mapInstance)}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
         <CenterListener setCenter={setCenter} />
-        <SetMapCenter center={center} />
+        <SetMapCenter center={center} handleMapInstance={handleMapInstance} />
+        {/* {polylineVisible === true && (
+          <Polyline
+            positions={[
+              [road.start.lat, road.start.lon],
+              [road.end.lat, road.end.lon],
+            ]}
+            color="blue"
+            weight={10}
+            opacity={0.6}
+          />
+        )} */}
+
         {/* <Marker position={[center.lat, center.lng]} icon={locationIcon} /> */}
       </MapContainer>
-      {road.status === "Come" ? (
-        <Image
-          src="/Mappin.svg"
-          alt="Location"
-          width={106}
-          height={100}
-          className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
-        />
-      ) : (
-        <Image
-          src="/goto.svg"
-          alt="Location"
-          width={106}
-          height={100}
-          className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
-        />
+      {road.status !== "Done" && (
+        <>
+          {road.status === "Come" ? (
+            <Image
+              src="/Mappin.svg"
+              alt="Location"
+              width={106}
+              height={100}
+              className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
+            />
+          ) : (
+            <Image
+              src="/goto.svg"
+              alt="Location"
+              width={106}
+              height={100}
+              className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
+            />
+          )}
+        </>
       )}
 
       <button

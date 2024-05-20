@@ -11,9 +11,9 @@ const SearchBar = () => {
   const { road, setRoad } = useRoadData();
 
   return (
-    <div className=" h-[30%] bg-white px-[8px] py-[2%] rounded-[20px] flex gap-[8px] justify-between items-center shadow-lg">
+    <div className=" h-[30%] bg-white px-[8px] py-[2%] rounded-[20px] flex gap-[10px] justify-between items-center shadow-lg">
       <Image src="/Icon.svg" width={25} height={20} alt="Search Icon" />
-      <div className="flex flex-col gap-[5px]">
+      <div className="flex flex-col gap-[8px]">
         {" "}
         <TextField
           onClick={() => {
@@ -39,6 +39,7 @@ const SearchBar = () => {
                   size={30}
                   onClick={() => {
                     address.display_name = "";
+                    // address.status = "Come";
                   }}
                 />
               </InputAdornment>
@@ -67,12 +68,24 @@ const SearchBar = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <CiStar
-                  size={30}
-                  onClick={() => {
-                    address.go_name = "";
-                  }}
-                />
+                {address.go_name === "" ? (
+                  <CiStar
+                    size={30}
+                    onClick={() => {
+                      address.go_name = "";
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="w-[30px] text-[18px] px-[10px]"
+                    onClick={() => {
+                      address.go_name = "";
+                      // address.status = "go to";
+                    }}
+                  >
+                    x
+                  </div>
+                )}
               </InputAdornment>
             ),
             disableUnderline: true,

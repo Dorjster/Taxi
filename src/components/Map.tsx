@@ -1,15 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-  MapContainer,
-  Polyline,
-  TileLayer,
-  useMap,
-  useMapEvent,
-} from "react-leaflet";
+import { MapContainer, TileLayer, useMap, useMapEvent } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { TbCurrentLocation } from "react-icons/tb";
-
 import { IonSpinner } from "@ionic/react";
 import { useAddressData } from "./Context/Address";
 import "leaflet-routing-machine";
@@ -40,8 +33,8 @@ type LineStyle = {
 
 type LineOptions = {
   styles: LineStyle[];
-  extendToWaypoints?: boolean;
-  missingRouteTolerance?: number;
+  extendToWaypoints: boolean;
+  missingRouteTolerance: number;
 };
 
 const SetMapCenter = ({
@@ -70,8 +63,8 @@ const OpenStreetMap = () => {
   const [mapInstance, setMapInstance] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showChooseButton, setShowChooseButton] = useState<boolean>(false);
-  const [polylineVisible, setPolylineVisible] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(17);
+  const [routingControl, setRoutingControl] = useState<any>(null);
 
   const handleMapInstance = (map: any) => {
     setMapInstance(map);
@@ -110,10 +103,11 @@ const OpenStreetMap = () => {
 
     return null;
   };
+
   const lineOptions: LineOptions = {
-    styles: [{ color: "blue", opacity: 1, weight: 5 }],
-    extendToWaypoints: true, // or false, depending on your requirement
-    missingRouteTolerance: 10, // or any other value, depending on your requirement
+    styles: [{ color: "black", opacity: 1, weight: 2 }],
+    extendToWaypoints: true,
+    missingRouteTolerance: 100,
   };
 
   useEffect(() => {
@@ -165,6 +159,7 @@ const OpenStreetMap = () => {
       getAddress();
     }
   }, [center, setAddress, setRoad, address.status, road.status]);
+
   useEffect(() => {
     if (
       road.end.lat !== 0 &&
@@ -206,7 +201,12 @@ const OpenStreetMap = () => {
       ...prev,
       status: "Done",
     }));
+
     if (mapInstance && road.start && road.end) {
+      if (routingControl) {
+        mapInstance.removeControl(routingControl);
+      }
+
       const control = L.Routing.control({
         waypoints: [
           L.latLng(road.start.lat, road.start.lon),
@@ -214,12 +214,10 @@ const OpenStreetMap = () => {
         ],
         routeWhileDragging: false,
         show: false,
-        // lineOptions: lineOptions,
+        lineOptions: lineOptions,
       });
-
-      console.log(control);
-
       control.addTo(mapInstance);
+      setRoutingControl(control);
     }
     setShowChooseButton(false);
   };
@@ -233,28 +231,13 @@ const OpenStreetMap = () => {
         style={{
           height: "100vh",
           width: "100vw",
-          // position: "relative",
           zIndex: "1",
         }}
         whenReady={() => handleMapInstance(mapInstance)}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
         <CenterListener setCenter={setCenter} />
         <SetMapCenter center={center} handleMapInstance={handleMapInstance} />
-        {/* {polylineVisible === true && (
-          <Polyline
-            positions={[
-              [road.start.lat, road.start.lon],
-              [road.end.lat, road.end.lon],
-            ]}
-            color="blue"
-            weight={10}
-            opacity={0.6}
-          />
-        )} */}
-
-        {/* <Marker position={[center.lat, center.lng]} icon={locationIcon} /> */}
       </MapContainer>
       {road.status !== "Done" && (
         <>
@@ -291,7 +274,7 @@ const OpenStreetMap = () => {
 
       {showChooseButton && (
         <button
-          className="absolute right-10 z-10 bottom-[26%] hover:scale-105 duration-200 bg-[black] text-white px-3 py-1 rounded-xl"
+          className="absolute right-10 z-10 bottom-[42%] right-[3%] hover:scale-105 duration-200 bg-[white] text-black px-3 py-1 rounded-xl shadow-2xl"
           onClick={handleChooseButtonClick}
         >
           Сонгох

@@ -21,7 +21,7 @@ export const cabs = [
     image: "/List-Car.svg",
     title: "Minivan",
     price: 3500,
-    description: `Олуулаа,4-с дээш хүний суудалтай`,
+    description: `Олуулаа`,
   },
 ];
 

@@ -60,6 +60,7 @@ const OpenStreetMap = () => {
     lat: 47.918873,
     lng: 106.917595,
   });
+
   const [mapInstance, setMapInstance] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showChooseButton, setShowChooseButton] = useState<boolean>(false);
@@ -215,6 +216,15 @@ const OpenStreetMap = () => {
         routeWhileDragging: false,
         show: false,
         lineOptions: lineOptions,
+      });
+      control.on("routesfound", function (e) {
+        const routes = e.routes;
+        const summary = routes[0].summary;
+        setRoad((prev) => ({
+          ...prev,
+          distance: summary.totalDistance,
+          duration: summary.totalTime,
+        }));
       });
       control.addTo(mapInstance);
       setRoutingControl(control);

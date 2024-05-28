@@ -48,4 +48,6 @@ export interface Road {
     lon: number;
   };
   status: string;
+  distance: number;
+  duration: number;
 }

@@ -24,6 +24,8 @@ export const RoadProvider: React.FC<RoadProviderProps> = ({ children }) => {
       lon: 0,
     },
     status: "Come",
+    distance: 0,
+    duration: 0,
   });
 
   return (

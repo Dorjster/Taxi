@@ -121,7 +121,7 @@ export const Menu3 = [
   },
   {
     icon: IoMoonOutline,
-    title: "Харанхуын горим",
+    title: "Харанхуйн горим",
   },
   {
     icon: BsSoundwave,

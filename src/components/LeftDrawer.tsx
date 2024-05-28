@@ -34,7 +34,7 @@ const LeftDrawer = () => {
         event.stopPropagation();
       }}
     >
-      <div className="fixed flex justify-start mt-4  bg-gray-100 py-3 px-5 rounded-full">
+      <div className="fixed flex justify-start mt-4  bg-gray-100 py-2 px-4 rounded-full ml-4">
         <button className="rounded-full" onClick={toggleDrawer(false)}>
           X
         </button>

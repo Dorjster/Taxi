@@ -15,14 +15,19 @@ const SwiperDetail = (props: Props) => {
       <div className="flex gap-[12px]">
         {" "}
         <div>
-          <Image src={image} alt={title} width={80} height={80} />
+          <Image
+            src={image}
+            alt={title}
+            width={80}
+            height={80}
+            className="w-auto h-auto"
+          />
         </div>
         <div className="mt-[10px]">
           <p className="font-bold text-[14px]">{title}</p>
           <p className="text-[12px] text-[#5C5C5C] ">{description}</p>
         </div>
       </div>
-
       <div className="font-medium text-[14px] mt-[10px]">{price}₮</div>
     </div>
   );

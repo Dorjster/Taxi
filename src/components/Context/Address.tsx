@@ -19,35 +19,9 @@ export const AddressProvider: React.FC<AddressProviderProps> = ({
   children,
 }) => {
   const [address, setAddress] = useState<Address>({
-    // address: {
-    //   ISO3166_2_lvl4: "",
-    //   building: "",
-    //   city: "",
-    //   city_district: "",
-    //   country: "",
-    //   country_code: "",
-    //   house_number: "",
-    //   postcode: "",
-    //   road: "",
-    //   suburb: "",
-    // },
-
-    // boundingbox: {
-    //   north: "",
-    //   south: "",
-    //   east: "",
-    //   west: "",
-    // },
-
     display_name: "",
     go_name: "",
     status: "Come",
-    // lat: "",
-    // licence: "",
-    // lon: "",
-    // osm_id: 0,
-    // osm_type: "",
-    // place_id: 0,
   });
 
   return (

@@ -1,4 +1,3 @@
-import { IoIosArrowRoundBack } from "react-icons/io";
 import { PiBellRingingThin } from "react-icons/pi";
 import { PiWalletThin } from "react-icons/pi";
 import { CiCreditCard1 } from "react-icons/ci";
@@ -119,6 +118,9 @@ export const Menu3 = [
     icon: IoIosHelpCircleOutline,
     title: "Тусламж",
   },
+];
+
+export const Menu4 = [
   {
     icon: IoMoonOutline,
     title: "Харанхуйн горим",

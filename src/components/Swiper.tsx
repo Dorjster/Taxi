@@ -117,14 +117,7 @@ export default function SwipeableTemporaryDrawer({
                     : `${(road.distance / 1000).toFixed(2)} км`}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                Аяллын хугацаа :{" "}
-                <span className="font-semibold">
-                  {road.duration < 60
-                    ? `${road.duration} сек`
-                    : `${(road.duration / 60).toFixed(2)} мин`}
-                </span>
-              </div>
+
               <div className="flex justify-between items-center">
                 Урьдчилсан үнэ :{" "}
                 <span className="font-semibold">

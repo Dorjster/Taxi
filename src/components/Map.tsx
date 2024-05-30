@@ -10,6 +10,7 @@ import L from "leaflet";
 
 import Image from "next/image";
 import { useRoadData } from "./Context/Road";
+import { useLoadingContext } from "./Context/Loading";
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -60,7 +61,7 @@ const OpenStreetMap = () => {
     lat: 47.918873,
     lng: 106.917595,
   });
-
+  const { loading1, setLoading1 } = useLoadingContext();
   const [mapInstance, setMapInstance] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showChooseButton, setShowChooseButton] = useState<boolean>(false);
@@ -89,7 +90,7 @@ const OpenStreetMap = () => {
           lat: newCenter.lat,
           lng: newCenter.lng,
         });
-      }, 500);
+      }, 50);
 
       setTimeoutId(newTimeoutId);
     });
@@ -106,15 +107,16 @@ const OpenStreetMap = () => {
   };
 
   const lineOptions: LineOptions = {
-    styles: [{ color: "black", opacity: 1, weight: 2 }],
+    styles: [{ color: "black", opacity: 1, weight: 3 }],
     extendToWaypoints: true,
     missingRouteTolerance: 100,
   };
 
   useEffect(() => {
     const getAddress = async () => {
-      const url = `https://geocode.maps.co/reverse?lat=${center.lat}&lon=${center.lng}&api_key=664413790747f007359223ewsbc990e`;
       try {
+        setLoading1(true);
+        const url = `https://geocode.maps.co/reverse?lat=${center.lat}&lon=${center.lng}&api_key=664413790747f007359223ewsbc990e`;
         const response = await fetch(url);
         const data = await response.json();
 
@@ -151,15 +153,18 @@ const OpenStreetMap = () => {
         }
       } catch (error: any) {
         console.log(error.message);
+      } finally {
+        setLoading1(false);
       }
     };
+
     if (
-      (address.status === "Come" || road.status !== "Done") &&
-      road.status !== "Done"
+      (address.status === "Come" && road.status !== "Done") ||
+      (road.status !== "Done" && address.status !== "Done")
     ) {
       getAddress();
     }
-  }, [center, setAddress, setRoad, address.status, road.status]);
+  }, [center, setAddress, setRoad, address.status, road.status, setLoading1]);
 
   useEffect(() => {
     if (
@@ -167,13 +172,14 @@ const OpenStreetMap = () => {
       road.end.lon !== 0 &&
       address.go_name !== address.display_name &&
       address.go_name !== "" &&
-      road.status !== "Done"
+      road.status !== "Done" &&
+      !loading1
     ) {
       setShowChooseButton(true);
     } else {
       setShowChooseButton(false);
     }
-  }, [road.end, address.go_name, address.display_name, road.status]);
+  }, [road.end, address.go_name, address.display_name, road.status, loading1]);
 
   const handleGetCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -188,6 +194,7 @@ const OpenStreetMap = () => {
         },
         () => {
           setLoading(false);
+
           alert("yr ni boldgue ho");
         }
       );
@@ -196,6 +203,27 @@ const OpenStreetMap = () => {
       alert("Geolocation ajilkueno");
     }
   };
+
+  useEffect(() => {
+    if (
+      road.end.lat !== 0 &&
+      road.end.lon !== 0 &&
+      address.go_name !== address.display_name &&
+      address.go_name !== "" &&
+      road.status === "Done"
+    ) {
+    } else if (routingControl && mapInstance) {
+      mapInstance.removeControl(routingControl);
+      setRoutingControl(null);
+    }
+  }, [
+    road.end,
+    address.go_name,
+    address.display_name,
+    road.status,
+    routingControl,
+    mapInstance,
+  ]);
 
   const handleChooseButtonClick = () => {
     setRoad((prev) => ({
@@ -206,6 +234,7 @@ const OpenStreetMap = () => {
     if (mapInstance && road.start && road.end) {
       if (routingControl) {
         mapInstance.removeControl(routingControl);
+        setRoutingControl(null);
       }
 
       const control = L.Routing.control({
@@ -213,9 +242,10 @@ const OpenStreetMap = () => {
           L.latLng(road.start.lat, road.start.lon),
           L.latLng(road.end.lat, road.end.lon),
         ],
-        routeWhileDragging: false,
+        routeWhileDragging: true,
         show: false,
         lineOptions: lineOptions,
+        fitSelectedRoutes: true,
       });
       control.on("routesfound", function (e) {
         const routes = e.routes;
@@ -247,6 +277,7 @@ const OpenStreetMap = () => {
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <CenterListener setCenter={setCenter} />
+
         <SetMapCenter center={center} handleMapInstance={handleMapInstance} />
       </MapContainer>
       {road.status !== "Done" && (
@@ -257,7 +288,7 @@ const OpenStreetMap = () => {
               alt="Location"
               width={106}
               height={100}
-              className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
+              className=" w-auto h-auto absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
             />
           ) : (
             <Image
@@ -265,14 +296,14 @@ const OpenStreetMap = () => {
               alt="Location"
               width={106}
               height={100}
-              className="absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
+              className="w-auto h-auto  absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
             />
           )}
         </>
       )}
 
       <button
-        className="absolute right-3 top-[45%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg"
+        className="absolute right-3 top-[45%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg hover:scale-105 duration-100"
         onClick={handleGetCurrentLocation}
       >
         {loading ? (

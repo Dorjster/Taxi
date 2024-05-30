@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AddressProvider } from "@/components/Context/Address";
 import { RoadProvider } from "@/components/Context/Road";
+import { LoadingProvider } from "@/components/Context/Loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <RoadProvider>
-          <AddressProvider>{children}</AddressProvider>
-        </RoadProvider>
+        <LoadingProvider>
+          <RoadProvider>
+            <AddressProvider>{children}</AddressProvider>
+          </RoadProvider>
+        </LoadingProvider>
       </body>
     </html>
   );

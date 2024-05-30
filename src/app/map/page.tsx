@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-// import Map from "../components/Map";
 const Map = dynamic(() => import("../../components/Map"), { ssr: false });
 
 const Maps = () => {

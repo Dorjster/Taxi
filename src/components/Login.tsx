@@ -44,7 +44,7 @@ const Login: React.FC = () => {
       <form onSubmit={handleSubmit} className="flex flex-col items-center ">
         <input
           type="tel"
-          placeholder="Enter your phone number"
+          placeholder="Утасны дугаар"
           value={phoneNumber}
           onChange={handlePhoneNumberChange}
           className="mb-4 px-4 py-2 border border-gray-300 rounded"

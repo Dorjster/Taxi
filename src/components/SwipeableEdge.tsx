@@ -36,6 +36,9 @@ const StyledBox = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
   height: "calc(100% - 100px)",
   overflow: "hidden",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
 }));
 
 const Puller = styled("div")(({ theme }) => ({

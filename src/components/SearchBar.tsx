@@ -1,20 +1,40 @@
-"use client";
+import React, { use, useEffect } from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import Image from "next/image";
-import React from "react";
 import { CiStar } from "react-icons/ci";
 import { useAddressData } from "./Context/Address";
 import { useRoadData } from "./Context/Road";
+import { useLoadingContext } from "./Context/Loading";
+import { IonSpinner } from "@ionic/react";
 
 const SearchBar = () => {
   const { address, setAddress } = useAddressData();
-  const { road, setRoad } = useRoadData();
+  const { setRoad } = useRoadData();
+  const { loading1, setLoading1 } = useLoadingContext();
+  const { road } = useRoadData();
+
+  // const handleAddressChange = (newValue: string) => {
+  //   setLoading1(true);
+  //   setAddress((prev) => ({ ...prev, display_name: newValue }));
+  //   setLoading1(false);
+  // };
+
+  // const handleGoAddressChange = (newValue: string) => {
+  //   setLoading1(true);
+  //   setAddress((prev) => ({ ...prev, go_name: newValue }));
+  //   setLoading1(false);
+  // };
 
   return (
     <div className=" h-[30%] bg-white px-[8px] py-[2%] rounded-[20px] flex gap-[10px] justify-between items-center shadow-lg">
-      <Image src="/Icon.svg" width={25} height={20} alt="Search Icon" />
+      <Image
+        src="/Icon.svg"
+        width={25}
+        height={20}
+        alt="Search Icon"
+        className="w-auto h-auto"
+      />
       <div className="flex flex-col gap-[8px]">
-        {" "}
         <TextField
           onClick={() => {
             setRoad((prev) => ({ ...prev, status: "Come" }));
@@ -27,21 +47,32 @@ const SearchBar = () => {
             display: "flex",
             alignItems: "center",
             padding: "2px 5px",
-            // height: "60%",
           }}
-          defaultValue={address?.display_name}
+          // aria-readonly="true"
+          // onChange={(e) => handleAddressChange(e.target.value)}
+          value={address?.display_name}
           id="input-with-icon-textfield"
           placeholder="Авах хаяг"
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <CiStar
-                  size={30}
-                  onClick={() => {
-                    address.display_name = "";
-                    // address.status = "Come";
-                  }}
-                />
+                {road.status === "Come" && loading1 ? (
+                  <IonSpinner
+                    className="text-black"
+                    name="lines-small"
+                  ></IonSpinner>
+                ) : (
+                  <CiStar
+                    size={30}
+                    onClick={() => {
+                      if (road.status === "Come") {
+                        setLoading1(true);
+                      } else {
+                        address.display_name = "";
+                      }
+                    }}
+                  />
+                )}
               </InputAdornment>
             ),
             disableUnderline: true,
@@ -60,15 +91,21 @@ const SearchBar = () => {
             display: "flex",
             alignItems: "center",
             padding: "2px 5px",
-            // height: "60%",
           }}
-          defaultValue={address?.go_name}
+          // aria-readonly="true"
+          value={address?.go_name}
+          // onChange={(e) => handleGoAddressChange(e.target.value)}
           id="input-with-icon-textfield"
           placeholder="Очих хаяг"
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {address.go_name === "" ? (
+                {road.status === "go to" && loading1 ? (
+                  <IonSpinner
+                    className="text-black"
+                    name="lines-small"
+                  ></IonSpinner>
+                ) : address.go_name === "" ? (
                   <CiStar
                     size={30}
                     onClick={() => {
@@ -80,7 +117,6 @@ const SearchBar = () => {
                     className="w-[30px] text-[18px] px-[10px]"
                     onClick={() => {
                       address.go_name = "";
-                      // address.status = "go to";
                     }}
                   >
                     x

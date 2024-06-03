@@ -1,12 +1,24 @@
-import Login from "@/components/Login";
+import dynamic from "next/dynamic";
+import TemporaryDrawer from "@/components/LeftDrawer";
 import React from "react";
+import SearchBar from "@/components/SearchBar";
+import BottomDrawer from "@/components/BottomDrawer";
 
-const page = () => {
+const Map = dynamic(() => import("../components/Map"), { ssr: false });
+
+const Page = () => {
   return (
-    <div>
-      <Login />
+    <div className="w-[100vw] relative overflow-hidden">
+      <Map />
+      <div className="absolute top-8 w-full flex justify-center gap-[20px] items-center z-20 ">
+        <TemporaryDrawer />
+        <SearchBar />
+      </div>
+      <div className="absolute z-10 bottom-0 w-full  ">
+        <BottomDrawer />
+      </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

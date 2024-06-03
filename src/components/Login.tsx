@@ -30,14 +30,14 @@ const Login: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const number = localStorage.getItem("phoneNumber");
-    if (number !== null && number !== "") {
-      push("/map");
-    } else {
-      push("/");
-    }
-  }, [push]);
+  // useEffect(() => {
+  //   const number = localStorage.getItem("phoneNumber");
+  //   if (number !== null && number !== "") {
+  //     push("/map");
+  //   } else {
+  //     push("/");
+  //   }
+  // }, [push]);
 
   return (
     <div className="flex justify-center items-center h-screen">

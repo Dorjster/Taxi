@@ -1,5 +1,5 @@
-import React, { use, useEffect } from "react";
-import { InputAdornment, TextField } from "@mui/material";
+"use client";
+import React from "react";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
 import { useAddressData } from "./Context/Address";
@@ -13,18 +13,6 @@ const SearchBar = () => {
   const { loading1, setLoading1 } = useLoadingContext();
   const { road } = useRoadData();
 
-  // const handleAddressChange = (newValue: string) => {
-  //   setLoading1(true);
-  //   setAddress((prev) => ({ ...prev, display_name: newValue }));
-  //   setLoading1(false);
-  // };
-
-  // const handleGoAddressChange = (newValue: string) => {
-  //   setLoading1(true);
-  //   setAddress((prev) => ({ ...prev, go_name: newValue }));
-  //   setLoading1(false);
-  // };
-
   return (
     <div className=" h-[30%] bg-white px-[8px] py-[2%] rounded-[20px] flex gap-[10px] justify-between items-center shadow-lg">
       <Image
@@ -35,99 +23,75 @@ const SearchBar = () => {
         className="w-auto h-auto"
       />
       <div className="flex flex-col gap-[8px]">
-        <TextField
+        <div
           onClick={() => {
             setRoad((prev) => ({ ...prev, status: "Come" }));
             setAddress((prev) => ({ ...prev, status: "Come" }));
           }}
-          sx={{
-            backgroundColor: "#F7F7F7",
-            borderRadius: "20px",
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            padding: "2px 5px",
-          }}
-          // aria-readonly="true"
-          // onChange={(e) => handleAddressChange(e.target.value)}
-          value={address?.display_name}
-          id="input-with-icon-textfield"
-          placeholder="Авах хаяг"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {road.status === "Come" && loading1 ? (
-                  <IonSpinner
-                    className="text-black"
-                    name="lines-small"
-                  ></IonSpinner>
-                ) : (
-                  <CiStar
-                    size={30}
-                    onClick={() => {
-                      if (road.status === "Come") {
-                        setLoading1(true);
-                      } else {
-                        address.display_name = "";
-                      }
-                    }}
-                  />
-                )}
-              </InputAdornment>
-            ),
-            disableUnderline: true,
-          }}
-          variant="standard"
-        />
-        <TextField
+          className="flex gap-[10px] items-center  bg-[#F7F7F7] rounded-[20px] justify-center px-[10px]"
+        >
+          <input
+            type="text"
+            value={address?.display_name}
+            placeholder="Очих хаяг"
+            onChange={(e) => {
+              setAddress((prev) => ({ ...prev, display_name: e.target.value }));
+            }}
+            className="bg-[#F7F7F7]  px-[2px] py-[5px] text-black"
+          />
+          {road.status === "Come" && loading1 ? (
+            <IonSpinner className="text-black" name="lines-small"></IonSpinner>
+          ) : (
+            <CiStar
+              size={30}
+              color="black"
+              onClick={() => {
+                if (road.status === "Come") {
+                  setLoading1(true);
+                } else {
+                  address.display_name = "";
+                }
+              }}
+            />
+          )}
+        </div>
+        <div
           onClick={() => {
             setRoad((prev) => ({ ...prev, status: "go to" }));
             setAddress((prev) => ({ ...prev, status: "go to" }));
           }}
-          sx={{
-            backgroundColor: "#F7F7F7",
-            borderRadius: "20px",
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            padding: "2px 5px",
-          }}
-          // aria-readonly="true"
-          value={address?.go_name}
-          // onChange={(e) => handleGoAddressChange(e.target.value)}
-          id="input-with-icon-textfield"
-          placeholder="Очих хаяг"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {road.status === "go to" && loading1 ? (
-                  <IonSpinner
-                    className="text-black"
-                    name="lines-small"
-                  ></IonSpinner>
-                ) : address.go_name === "" ? (
-                  <CiStar
-                    size={30}
-                    onClick={() => {
-                      address.go_name = "";
-                    }}
-                  />
-                ) : (
-                  <div
-                    className="w-[30px] text-[18px] px-[10px]"
-                    onClick={() => {
-                      address.go_name = "";
-                    }}
-                  >
-                    x
-                  </div>
-                )}
-              </InputAdornment>
-            ),
-            disableUnderline: true,
-          }}
-          variant="standard"
-        />
+          className="flex gap-[10px] items-center  bg-[#F7F7F7] rounded-[20px] justify-center px-[10px]"
+        >
+          <input
+            type="text"
+            value={address?.go_name}
+            placeholder="Авах хаяг"
+            onChange={(e) => {
+              setAddress((prev) => ({ ...prev, go_name: e.target.value }));
+            }}
+            className="bg-[#F7F7F7]  px-[2px] py-[5px] text-black"
+          />
+          {road.status === "go to" && loading1 ? (
+            <IonSpinner className="text-black" name="lines-small"></IonSpinner>
+          ) : address.go_name === "" ? (
+            <CiStar
+              color="black"
+              size={30}
+              onClick={() => {
+                address.go_name = "";
+              }}
+            />
+          ) : (
+            <div
+              className="w-[30px] text-[18px] px-[10px]"
+              onClick={() => {
+                address.go_name = "";
+              }}
+            >
+              x
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

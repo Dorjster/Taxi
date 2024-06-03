@@ -40,13 +40,17 @@ type LineOptions = {
 
 const SetMapCenter = ({
   center,
-  handleMapInstance,
+  setMapInstance,
 }: {
   center: Center;
-  handleMapInstance: (map: any) => void;
+  setMapInstance: React.Dispatch<React.SetStateAction<any>>;
 }) => {
   const map = useMap();
-  handleMapInstance(map);
+
+  useEffect(() => {
+    setMapInstance(map);
+  }, [map, setMapInstance]);
+
   useEffect(() => {
     map.flyTo([center.lat, center.lng]);
   }, [center, map]);
@@ -68,10 +72,6 @@ const OpenStreetMap = () => {
   const [zoom, setZoom] = useState<number>(17);
   const [routingControl, setRoutingControl] = useState<any>(null);
 
-  const handleMapInstance = (map: any) => {
-    setMapInstance(map);
-  };
-
   const CenterListener = ({
     setCenter,
   }: {
@@ -90,7 +90,7 @@ const OpenStreetMap = () => {
           lat: newCenter.lat,
           lng: newCenter.lng,
         });
-      }, 50);
+      }, 200);
 
       setTimeoutId(newTimeoutId);
     });
@@ -242,7 +242,7 @@ const OpenStreetMap = () => {
           L.latLng(road.start.lat, road.start.lon),
           L.latLng(road.end.lat, road.end.lon),
         ],
-        routeWhileDragging: true,
+        routeWhileDragging: false,
         show: false,
         lineOptions: lineOptions,
         fitSelectedRoutes: true,
@@ -271,14 +271,12 @@ const OpenStreetMap = () => {
         style={{
           height: "100vh",
           width: "100vw",
-          zIndex: "1",
+          zIndex: 0,
         }}
-        whenReady={() => handleMapInstance(mapInstance)}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <CenterListener setCenter={setCenter} />
-
-        <SetMapCenter center={center} handleMapInstance={handleMapInstance} />
+        <SetMapCenter center={center} setMapInstance={setMapInstance} />
       </MapContainer>
       {road.status !== "Done" && (
         <>
@@ -288,7 +286,7 @@ const OpenStreetMap = () => {
               alt="Location"
               width={106}
               height={100}
-              className=" w-auto h-auto absolute md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
+              className=" w-auto h-auto absolute -z-0 md:left-[55%] left-[50%] top-[46.8%] transform -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-105 duration-200"
             />
           ) : (
             <Image
@@ -303,7 +301,7 @@ const OpenStreetMap = () => {
       )}
 
       <button
-        className="absolute right-3 top-[45%] z-10 bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg hover:scale-105 duration-100"
+        className="absolute -z-0 right-3 top-[45%]  bg-white w-14 h-14 rounded-full flex justify-center items-center shadow-lg hover:scale-105 duration-100"
         onClick={handleGetCurrentLocation}
       >
         {loading ? (
@@ -315,7 +313,7 @@ const OpenStreetMap = () => {
 
       {showChooseButton && (
         <button
-          className="absolute right-10 z-10 bottom-[42%] right-[3%] hover:scale-105 duration-200 bg-[white] text-black px-3 py-1 rounded-xl shadow-2xl"
+          className="absolute right-10 -z-0 bottom-[42%] right-[3%] hover:scale-105 duration-200 bg-[white] text-black px-3 py-1 rounded-xl shadow-2xl"
           onClick={handleChooseButtonClick}
         >
           Сонгох

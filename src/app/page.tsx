@@ -10,11 +10,11 @@ const Page = () => {
   return (
     <div className="w-[100vw] relative overflow-hidden">
       <Map />
-      <div className="absolute top-8 w-full flex justify-center gap-[20px] items-center z-20 ">
+      <div className="absolute top-8 w-full flex justify-center gap-[15px] items-center z-30 px-[2%] ">
         <TemporaryDrawer />
         <SearchBar />
       </div>
-      <div className="absolute z-10 bottom-0 w-full  ">
+      <div className="absolute z-20 bottom-0 w-full  ">
         <BottomDrawer />
       </div>
     </div>

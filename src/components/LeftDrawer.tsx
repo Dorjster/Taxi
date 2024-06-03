@@ -36,11 +36,11 @@ const LeftDrawer = () => {
           top: 0,
           left: open ? 0 : "-100%",
           zIndex: 111,
-          transition: "left 0.3s ease",
+          transition: "left 0.3s ease-in-out",
         }}
       >
         <div>
-          <div className="flex justify-start mt-4 py-2 px-2 rounded-full ml-4">
+          <div className="flex justify-start  py-2 px-2 rounded-full ml-1">
             <button className="rounded-full" onClick={toggleDrawer}>
               <MdChevronLeft size={25} color="black" />
             </button>
@@ -125,7 +125,12 @@ const LeftDrawer = () => {
                   </div>
                   <div className="text-black">{el.title}</div>
                 </div>
-                <div>{/* Switch component goes here */}</div>
+                <div>
+                  <label className="inline-flex items-center cursor-pointer ">
+                    <input type="checkbox" value="" className="sr-only peer" />
+                    <div className="relative w-11 h-6 top-[5px] bg-gray-100 peer-focus:outline-none  peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-200 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"></div>
+                  </label>
+                </div>
               </div>
             ))}
           </div>

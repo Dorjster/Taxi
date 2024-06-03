@@ -40,7 +40,7 @@ const BottomDrawer = () => {
           className={`handle drawer bg-white w-full absolute bottom-0 h-[630px] rounded-t-[20px] shadow-inner overflow-scroll `}
           style={{
             transform: isDrawerOpen ? "translateY(0)" : "translateY(0)",
-            transition: "transform 0.3s ease",
+            transition: "transform 0.3s ease-in-out",
           }}
         >
           <div className="handle flex justify-center bg-white items-center h-6 w-full cursor-grab rounded-[20px]">
@@ -50,13 +50,8 @@ const BottomDrawer = () => {
             <div>Такси үйлчилгээ</div>
             {cabs.map((cab, index) => (
               <div
-                onClick={() => {
-                  handleCall(cab);
-                  console.log("Cab clicked:", cab);
-                }}
                 onTouchEnd={() => {
                   handleCall(cab);
-                  console.log("Cab touched:", cab);
                 }}
                 key={index}
                 className="mb-[10px] rounded-[10px] overflow-hidden"
@@ -72,13 +67,8 @@ const BottomDrawer = () => {
             <div>Хүргэлт</div>
             {Delivery.map((delivery, index) => (
               <div
-                onClick={() => {
-                  handleCall(delivery);
-                  console.log("Delivery clicked:", delivery);
-                }}
                 onTouchEnd={() => {
                   handleCall(delivery);
-                  console.log("Delivery touched:", delivery);
                 }}
                 key={index}
                 className="mb-[10px] rounded-[10px] overflow-hidden"
@@ -94,9 +84,6 @@ const BottomDrawer = () => {
             <div>Дуудлагын жолооч</div>
             {Driver.map((driver, index) => (
               <div
-                onClick={() => {
-                  handleCall(driver);
-                }}
                 onTouchEnd={() => {
                   handleCall(driver);
                 }}

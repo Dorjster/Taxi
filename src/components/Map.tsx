@@ -58,6 +58,7 @@ const SetMapCenter = ({
   return null;
 };
 
+console.log(process.env.API);
 const OpenStreetMap = () => {
   const { road, setRoad } = useRoadData();
   const { address, setAddress } = useAddressData();

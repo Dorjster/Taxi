@@ -42,7 +42,7 @@ export const Delivery = [
     image: "/List-Car.svg",
     title: "Гараас гарт",
     price: 5000,
-    description: "Найдвартай баталгаатай, хурдтай",
+    description: "Найдвартай баталгаатай",
   },
 ];
 
